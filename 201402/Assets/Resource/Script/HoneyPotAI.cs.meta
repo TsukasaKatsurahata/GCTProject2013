@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: 63eb31363bae2b648bc6bb92b89618c7
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - HornetA: {fileID: 100004, guid: 533e7513006b8c348be6e8f5a5e73ea6, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
