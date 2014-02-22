@@ -3,6 +3,7 @@ using System.Collections;
 
 public class HoneyPotAI : MonoBehaviour {
 	public GameObject HornetA = null;
+	public Transform StartPoint = null;
 	private float Timer;
 
 	// Use this for initialization
