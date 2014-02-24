@@ -8,7 +8,8 @@ public class HoneyPotAI : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		Timer = 12f;
+		//Timer = 12f;
+		Timer = 1.0f;
 	}
 	
 	// Update is called once per frame
@@ -16,7 +17,8 @@ public class HoneyPotAI : MonoBehaviour {
 		if (HornetA == null) return;
 		if (Time.time > Timer) {
 			Timer = Time.time + 2.3f;
-			GameObject hornet = (GameObject)GameObject.Instantiate(HornetA, (DataBase.Lines[((int)(Random.value * (DataBase.Lines.Length - 0.02f)))].position), new Quaternion());
+			//GameObject hornet = (GameObject)GameObject.Instantiate(HornetA, (DataBase.Lines[((int)(Random.value * (DataBase.Lines.Length - 0.02f)))].position), new Quaternion());
+			GameObject hornet = (GameObject)GameObject.Instantiate(HornetA, StartPoint.position, new Quaternion());
 		}
 	}
 }
