@@ -16,7 +16,7 @@ public class HoneyPotAI : MonoBehaviour {
 	void Update () {
 		if (HornetA == null) return;
 		if (Time.time > Timer) {
-			Timer = Time.time + 2.3f;
+			Timer = Time.time + 1.3f;
 			//GameObject hornet = (GameObject)GameObject.Instantiate(HornetA, (DataBase.Lines[((int)(Random.value * (DataBase.Lines.Length - 0.02f)))].position), new Quaternion());
 			GameObject hornet = (GameObject)GameObject.Instantiate(HornetA, StartPoint.position, new Quaternion());
 		}

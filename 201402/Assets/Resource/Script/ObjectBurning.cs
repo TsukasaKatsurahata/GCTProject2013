@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class ObjectBurning : MonoBehaviour {
-	public Object BurnEffect = null;
+	public GameObject BurnEffect = null;
 	public bool burning = false;
 	public float Count = 0.5f;
 
@@ -24,5 +24,12 @@ public class ObjectBurning : MonoBehaviour {
 		effect.transform.parent = this.transform;
 		BurnEffect = effect;
 		burning = true;
+	}
+
+	public void RemoveBurn() {
+		ParticleEmitter[] PE = BurnEffect.GetComponentsInChildren<ParticleEmitter>();
+		foreach (ParticleEmitter pe in PE) {
+			pe.emit = false;
+		}
 	}
 }
