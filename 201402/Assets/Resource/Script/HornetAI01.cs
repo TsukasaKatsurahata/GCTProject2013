@@ -58,6 +58,9 @@ public class HornetAI01 : MonoBehaviour {
 			+ LineTarget.forward * randPos.z;
 
 		burningS = this.transform.GetComponentInChildren<ObjectBurning>();
+
+		AudioSource AS = GetComponent<AudioSource>();
+		if (AS != null) AS.pitch = (Random.value - 0.5f) - 0.5f;
 	}
 	
 	// Update is called once per frame

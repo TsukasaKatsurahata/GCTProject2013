@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resource\Script\HoneyPotAI.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Resource\Script\HornetAI01.cs">
     <Files>
-      <File FileName="Assets\Resource\Script\HoneyPotAI.cs" Line="7" Column="1" />
+      <File FileName="Assets\Resource\Script\HornetAI01.cs" Line="120" Column="26" />
+      <File FileName="Assets\Resource\Script\HoneyPotAI.cs" Line="11" Column="17" />
+      <File FileName="Assets\Resource\Script\ObjectBurning.cs" Line="30" Column="62" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
