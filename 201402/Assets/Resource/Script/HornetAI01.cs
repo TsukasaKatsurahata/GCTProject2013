@@ -49,7 +49,7 @@ public class HornetAI01 : MonoBehaviour {
 
 		randPos = new Vector3(
 			(Random.value - 0.5f) * 1.1f, 
-			(Random.value - 0.5f) * 0.4f, 
+			(Random.value - 0.2f) * 0.2f, 
 			(Random.value - 0.5f) * 1.0f
 			);
 		LineTarget.position = LineTarget.position 
@@ -90,6 +90,7 @@ public class HornetAI01 : MonoBehaviour {
 			if (burningS.burning) nowState = HornetAIState.Burn;
 			if (Time.time > IntervalTime) nowState = HornetAIState.Move;
 			AproachPlayer();
+			if (Distans3(this.transform.position, Player.transform.position, 1.0f)) nowState = HornetAIState.FollowForward;
 			break;
 		case HornetAIState.Move:
 			if (burningS.burning) nowState = HornetAIState.Burn;
@@ -144,8 +145,8 @@ public class HornetAI01 : MonoBehaviour {
 
 	void AproachPlayer() {
 		//if (burningS.burning) { transform.rigidbody.MovePosition(this.transform.position + new Vector3(0, -0.03f, 0)); return; }
-		if (Distans3(this.transform.position, Player.transform.position, 1.0f)) return;
-		transform.rigidbody.MovePosition(this.transform.position + this.transform.forward * 0.02f);
+		//if (Distans3(this.transform.position, Player.transform.position, 1.0f)) return;
+		transform.rigidbody.MovePosition(this.transform.position + this.transform.forward * 0.014f);
 		if (this.Player == null) return;
 	}
 
@@ -170,7 +171,7 @@ public class HornetAI01 : MonoBehaviour {
 
 	void NextLineSet() {
 		LMMV = 0.0f;
-		IntervalTime = 1.2f + Random.value * 1.0f;
+		IntervalTime = 5.2f + Random.value * 8.0f;
 		nowLine = nowLine + ((nowLine < 1) ? 1 : (nowLine > 5) ? -1 : (Random.value < 0.5f) ? 1 : -1);
 		LineTarget = DataBase.Lines[nowLine];
 		LineTarget.position = LineTarget.position 
