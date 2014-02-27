@@ -16,6 +16,7 @@ enum HornetAIState {
 
 public class HornetAI01 : MonoBehaviour {
 	public Transform LineTarget = null;
+	private Vector3 LineTargetPos;
 	public GameObject Player = null;
 	public GameObject FaceForward = null;
 	
@@ -51,14 +52,21 @@ public class HornetAI01 : MonoBehaviour {
 		LMMV = 0.0f;
 
 		randPos = new Vector3(
-			(Random.value - 0.5f) * 1.1f, 
-			(Random.value - 0.2f) * 0.2f, 
-			(Random.value - 0.5f) * 1.0f
+			(Random.value - 0.5f) * 1.7f, 
+			(Random.value - 0.2f) * 0.8f, 
+			(Random.value - 0.5f) * 1.3f
 			);
+#if false
 		LineTarget.position = LineTarget.position 
 			+ LineTarget.right   * randPos.x
 			+ LineTarget.up      * randPos.y
 			+ LineTarget.forward * randPos.z;
+#else
+		LineTargetPos = LineTarget.position 
+			+ LineTarget.right   * randPos.x
+				+ LineTarget.up      * randPos.y
+				+ LineTarget.forward * randPos.z;
+#endif
 
 		burningS = this.transform.GetComponentInChildren<ObjectBurning>();
 
@@ -179,8 +187,13 @@ public class HornetAI01 : MonoBehaviour {
 		bool result = false;
 		LMMV += 98f * Time.deltaTime * Time.deltaTime;
 		Vector3 dpos = new Vector3(); // localPosition
+#if false
 		dpos.x = Dot(transform.position, LineTarget.position, transform.right);
 		dpos.y = Dot(transform.position, LineTarget.position, transform.up);
+#else
+		dpos.x = Dot(transform.position, LineTargetPos, transform.right);
+		dpos.y = Dot(transform.position, LineTargetPos, transform.up);
+#endif
 		result = (dpos.x * dpos.x + dpos.y * dpos.y + dpos.z * dpos.z < Length * Length);
 		//dpos.z = Dot(transform.position, LineTarget.position, transform.forward);
 		//dpos.z=0.0f
@@ -199,10 +212,17 @@ public class HornetAI01 : MonoBehaviour {
 		IntervalTime = Time.time + 2.2f + Random.value * 8.0f;
 		nowLine = nowLine + ((nowLine < 1) ? 1 : (nowLine > 5) ? -1 : (Random.value < 0.5f) ? 1 : -1);
 		LineTarget = DataBase.Lines[nowLine];
+#if false
 		LineTarget.position = LineTarget.position 
 			+ LineTarget.right   * randPos.x
 			+ LineTarget.up      * randPos.y
 			+ LineTarget.forward * randPos.z;
+#else
+		LineTargetPos = LineTarget.position 
+			+ LineTarget.right   * randPos.x
+			+ LineTarget.up      * randPos.y
+			+ LineTarget.forward * randPos.z;
+#endif
 	}
 
 	bool FaceFollowing() {
