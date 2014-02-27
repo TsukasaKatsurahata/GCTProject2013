@@ -8,9 +8,20 @@ Authors     :   Peter Giokaris
 
 Copyright   :   Copyright 2013 Oculus VR, Inc. All Rights reserved.
 
-Use of this software is subject to the terms of the Oculus LLC license
-agreement provided at the time of installation or download, or which
+Licensed under the Oculus VR SDK License Version 2.0 (the "License"); 
+you may not use the Oculus VR SDK except in compliance with the License, 
+which is provided at the time of installation or download, or which 
 otherwise accompanies this software in either electronic or hard copy form.
+
+You may obtain a copy of the License at
+
+http://www.oculusvr.com/licenses/LICENSE-2.0 
+
+Unless required by applicable law or agreed to in writing, the Oculus VR SDK 
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 ************************************************************************************/
 using UnityEngine;
@@ -30,9 +41,7 @@ public class OVRCameraController : OVRComponent
 	// PRIVATE MEMBERS
 	private bool   UpdateCamerasDirtyFlag = false;	
 	private Camera CameraLeft, CameraRight = null;
-	private float  IPD = 0.064f; 							// in millimeters
 	private float  LensOffsetLeft, LensOffsetRight = 0.0f;  // normalized screen space
-	private float  VerticalFOV = 90.0f;	 					// in degrees
 	private float  AspectRatio = 1.0f;						
 	private float  DistK0, DistK1, DistK2, DistK3 = 0.0f; 	// lens distortion parameters
 
@@ -43,6 +52,25 @@ public class OVRCameraController : OVRComponent
 	private float   YRotation = 0.0f;
 	
 	// PUBLIC MEMBERS
+	
+	// IPD
+	[SerializeField]
+	private float  		ipd 		= 0.064f; 				// in millimeters
+	public 	float 		IPD
+	{
+		get{return ipd;}
+		set{ipd = value; UpdateCamerasDirtyFlag = true;}
+	}
+	
+	// VERTICAL FOV
+	[SerializeField]
+	private float  		verticalFOV = 90.0f;	 			// in degrees
+	public 	float		VerticalFOV
+	{
+		get{return verticalFOV;}
+		set{verticalFOV = value; UpdateCamerasDirtyFlag = true;}
+	}
+	
 	// Camera positioning:
 	// CameraRootPosition will be used to calculate NeckPosition and Eye Height
 	public Vector3 		CameraRootPosition = new Vector3(0.0f, 1.0f, 0.0f);					
@@ -66,6 +94,8 @@ public class OVRCameraController : OVRComponent
 	public bool    		PortraitMode 	 = false; // We currently default to landscape mode for render
 	private bool 		PrevPortraitMode = false;
 	
+	// Use this to enable / disable Tracker orientation
+	public bool         EnableOrientation = true;
 	// Use this to turn on/off Prediction
 	public bool			PredictionOn 	= true;
 	// Use this to decide where tracker sampling should take place
@@ -81,10 +111,30 @@ public class OVRCameraController : OVRComponent
 	
 	// UNITY CAMERA FIELDS
 	// Set the background color for both cameras
-	public Color 		BackgroundColor = new Color(0.192f, 0.302f, 0.475f, 1.0f);
+	[SerializeField]
+	private Color 		backgroundColor = new Color(0.192f, 0.302f, 0.475f, 1.0f);
+	public  Color       BackgroundColor
+	{
+		get{return backgroundColor;}
+		set{backgroundColor = value; UpdateCamerasDirtyFlag = true;}
+	}
+	
 	// Set the near and far clip plane for both cameras
-	public float 		NearClipPlane   = 0.15f;
-	public float 		FarClipPlane    = 1000.0f;
+	[SerializeField]
+	private float 		nearClipPlane   = 0.15f;
+	public  float 		NearClipPlane
+	{
+		get{return nearClipPlane;}
+		set{nearClipPlane = value; UpdateCamerasDirtyFlag = true;}
+	}
+	
+	[SerializeField]
+	private float 		farClipPlane    = 1000.0f;  
+	public  float 		FarClipPlane
+	{
+		get{return farClipPlane;}
+		set{farClipPlane = value; UpdateCamerasDirtyFlag = true;}
+	}
 	
 	// * * * * * * * * * * * * *
 		
@@ -138,7 +188,7 @@ public class OVRCameraController : OVRComponent
 	public void InitCameraControllerVariables()
 	{
 		// Get the IPD value (distance between eyes in meters)
-		OVRDevice.GetIPD(ref IPD);
+		OVRDevice.GetIPD(ref ipd);
 
 		// Get the values for both IPD and lens distortion correction shift. We don't normally
 		// need to set the PhysicalLensOffset once it's been set here.
@@ -204,7 +254,7 @@ public class OVRCameraController : OVRComponent
 		Vector3 EyePosition = EyeCenterPosition;
 				
 		// Vertical FOV
-		camera.fov = VerticalFOV;
+		camera.fieldOfView = VerticalFOV;
 			
 		// Aspect ratio 
 		camera.aspect = AspectRatio;
@@ -212,7 +262,11 @@ public class OVRCameraController : OVRComponent
 		// Centre of lens correction
 		camera.GetComponent<OVRLensCorrection>()._Center.x = distOffset;
 		ConfigureCameraLensCorrection(ref camera);
-
+		
+		// Clip Planes
+   		camera.nearClipPlane = NearClipPlane;
+   		camera.farClipPlane = FarClipPlane;
+		
 		// Perspective offset for image
 		PerspOffset.x = perspOffset;
 		camera.GetComponent<OVRCamera>().SetPerspectiveOffset(ref PerspOffset);
