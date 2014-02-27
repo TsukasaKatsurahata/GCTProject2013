@@ -209,7 +209,7 @@ public class HornetAI01 : MonoBehaviour {
 		if (FaceForward == null) return true;
 		Vector3 dpos = FaceForward.transform.position - this.transform.position;
 		transform.rigidbody.MovePosition(this.transform.position + dpos * (1.0f / 32.0f));
-		return (dpos.x * dpos.x + dpos.y * dpos.y + dpos.z * dpos.z) < 0.0001f;
+		return (dpos.x * dpos.x + dpos.y * dpos.y + dpos.z * dpos.z) < (0.08f * 0.08f);
 	}
 
 	void GoAway() {
