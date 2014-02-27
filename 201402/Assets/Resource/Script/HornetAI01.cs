@@ -110,7 +110,10 @@ public class HornetAI01 : MonoBehaviour {
 			}
 			break;
 		case HornetAIState.Move:
-			if (burningS.burning) nowState = HornetAIState.Burn;
+			if (burningS.burning) {
+				nowState = HornetAIState.Burn;
+				modelAnim.SetAnimDead();
+			}
 			if (LineMove(0.02f)) { 
 				nowState = HornetAIState.Aproach; 
 				NextLineSet();
