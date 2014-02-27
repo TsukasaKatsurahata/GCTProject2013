@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: 96354fd660202364c94870a6065dedea
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - Effect: {fileID: 100000, guid: b00e9e1bf866c1d47b9ea31817fc65a3, type: 2}
+  - SetCamera: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 

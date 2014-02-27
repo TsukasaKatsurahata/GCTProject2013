@@ -10,6 +10,7 @@ enum HornetAIState {
 	Speer,
 	Burn,
 	Dead,
+	GoAway,
 	Max,
 };
 
@@ -17,7 +18,7 @@ public class HornetAI01 : MonoBehaviour {
 	public Transform LineTarget = null;
 	public GameObject Player = null;
 	public GameObject FaceForward = null;
-
+	
 	public float LifeMax = 0.3f;
 
 	private HornetAIState nowState;
@@ -29,6 +30,8 @@ public class HornetAI01 : MonoBehaviour {
 	private Vector3 randPos;
 
 	private ObjectBurning burningS;
+
+	private ModelAnimation modelAnim;
 
 	// Use this for initialization
 	void Start () {
@@ -49,7 +52,7 @@ public class HornetAI01 : MonoBehaviour {
 
 		randPos = new Vector3(
 			(Random.value - 0.5f) * 1.1f, 
-			(Random.value - 0.5f) * 0.4f, 
+			(Random.value - 0.2f) * 0.2f, 
 			(Random.value - 0.5f) * 1.0f
 			);
 		LineTarget.position = LineTarget.position 
@@ -58,6 +61,11 @@ public class HornetAI01 : MonoBehaviour {
 			+ LineTarget.forward * randPos.z;
 
 		burningS = this.transform.GetComponentInChildren<ObjectBurning>();
+
+		AudioSource AS = GetComponent<AudioSource>();
+		if (AS != null) AS.pitch = (Random.value - 0.5f) - 0.5f;
+
+		modelAnim = this.transform.GetComponentInChildren<ModelAnimation>();
 	}
 	
 	// Update is called once per frame
@@ -87,6 +95,11 @@ public class HornetAI01 : MonoBehaviour {
 			if (burningS.burning) nowState = HornetAIState.Burn;
 			if (Time.time > IntervalTime) nowState = HornetAIState.Move;
 			AproachPlayer();
+			if (Distans3(this.transform.position, Player.transform.position, 1.0f)) { 
+				nowState = HornetAIState.FollowForward; 
+				animation.CrossFade("BeeAnimIdle00");
+				Player = DataBase.CameraLookAt;
+			}
 			break;
 		case HornetAIState.Move:
 			if (burningS.burning) nowState = HornetAIState.Burn;
@@ -96,6 +109,12 @@ public class HornetAI01 : MonoBehaviour {
 			}
 			break;
 		case HornetAIState.FollowForward:
+			if (FaceFollowing()) { 
+				nowState = HornetAIState.Speer;
+				if (modelAnim != null) modelAnim.SetAnimSpeer();
+				Timer = Time.time + 0.55f;
+				IntervalTime = Time.time + 1.3f;
+			}
 			break;
 		case HornetAIState.Burn:
 			Timer = Time.time + 15.0f;
@@ -129,6 +148,16 @@ public class HornetAI01 : MonoBehaviour {
 			}
 			break;
 		case HornetAIState.Speer:
+			if (Time.time > Timer) {
+				DamageEffect.getInstance.SetEffect();
+				Timer = Time.time + 30.0f;
+			}
+			if (Time.time > IntervalTime) nowState = HornetAIState.GoAway;
+			break;
+		case HornetAIState.GoAway:
+			GoAway();
+			break;
+		default:
 			break;
 		}
 #endif
@@ -141,8 +170,8 @@ public class HornetAI01 : MonoBehaviour {
 
 	void AproachPlayer() {
 		//if (burningS.burning) { transform.rigidbody.MovePosition(this.transform.position + new Vector3(0, -0.03f, 0)); return; }
-		if (Distans3(this.transform.position, Player.transform.position, 1.0f)) return;
-		transform.rigidbody.MovePosition(this.transform.position + this.transform.forward * 0.02f);
+		//if (Distans3(this.transform.position, Player.transform.position, 1.0f)) return;
+		transform.rigidbody.MovePosition(this.transform.position + this.transform.forward * 0.014f);
 		if (this.Player == null) return;
 	}
 
@@ -167,13 +196,26 @@ public class HornetAI01 : MonoBehaviour {
 
 	void NextLineSet() {
 		LMMV = 0.0f;
-		IntervalTime = 1.2f + Random.value * 1.0f;
+		IntervalTime = Time.time + 2.2f + Random.value * 8.0f;
 		nowLine = nowLine + ((nowLine < 1) ? 1 : (nowLine > 5) ? -1 : (Random.value < 0.5f) ? 1 : -1);
 		LineTarget = DataBase.Lines[nowLine];
 		LineTarget.position = LineTarget.position 
 			+ LineTarget.right   * randPos.x
 			+ LineTarget.up      * randPos.y
 			+ LineTarget.forward * randPos.z;
+	}
+
+	bool FaceFollowing() {
+		if (FaceForward == null) return true;
+		Vector3 dpos = FaceForward.transform.position - this.transform.position;
+		transform.rigidbody.MovePosition(this.transform.position + dpos * (1.0f / 32.0f));
+		return (dpos.x * dpos.x + dpos.y * dpos.y + dpos.z * dpos.z) < 0.0001f;
+	}
+
+	void GoAway() {
+		LMMV += 98f * Time.deltaTime * Time.deltaTime;
+		rigidbody.MovePosition(transform.position + Vector3.up * LMMV + transform.forward * -0.01f);
+		if (transform.position.y > 25.0f) Destroy(this.gameObject);
 	}
 
 	bool Distans3(Vector3 pos1, Vector3 pos2, float L) {

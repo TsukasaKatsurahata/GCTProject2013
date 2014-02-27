@@ -28,6 +28,7 @@ ModelImporter:
     4300000: polySurface1
     7400000: Take 001
     7400002: Take 002
+    7400004: Take 003
     9500000: //RootNode
     11100000: //RootNode
     13700000: polySurface1
@@ -99,6 +100,54 @@ ModelImporter:
       takeName: Take 001
       firstFrame: 25
       lastFrame: 90
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: polySurface1
+        weight: 1
+      - path: root
+        weight: 1
+      - path: root/head
+        weight: 1
+      - path: root/left_wing
+        weight: 1
+      - path: root/left_wing/joint8
+        weight: 1
+      - path: root/right_wing
+        weight: 1
+      - path: root/right_wing/joint10
+        weight: 1
+      - path: root/teel_
+        weight: 1
+      - path: root/teel_/joint3
+        weight: 1
+      - path: root/teel_/joint3/joint4
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+    - serializedVersion: 16
+      name: Take 003
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: .100000001
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
