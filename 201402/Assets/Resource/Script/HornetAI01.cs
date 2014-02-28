@@ -112,7 +112,7 @@ public class HornetAI01 : MonoBehaviour {
 		case HornetAIState.Move:
 			if (burningS.burning) {
 				nowState = HornetAIState.Burn;
-				modelAnim.SetAnimDead();
+				//modelAnim.SetAnimDead();
 			}
 			if (LineMove(0.02f)) { 
 				nowState = HornetAIState.Aproach; 
@@ -131,6 +131,7 @@ public class HornetAI01 : MonoBehaviour {
 			Timer = Time.time + 15.0f;
 			IntervalTime = Time.time + 6.0f;
 			animation.CrossFade("BeeAnimIdle00");
+			if (modelAnim != null) modelAnim.SetAnimDead();
 			//transform.GetChild(0).rigidbody.useGravity = true;
 			transform.rigidbody.useGravity = true;
 			transform.rigidbody.constraints = new RigidbodyConstraints();

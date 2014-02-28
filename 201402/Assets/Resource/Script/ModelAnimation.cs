@@ -23,5 +23,6 @@ public class ModelAnimation : MonoBehaviour {
 	public void SetAnimDead() {
 		if (anim == null) return;
 		anim.Play("Take 003");
+		Destroy(this);
 	}
 }
