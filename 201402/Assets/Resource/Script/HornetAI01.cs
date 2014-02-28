@@ -33,6 +33,7 @@ public class HornetAI01 : MonoBehaviour {
 	private ObjectBurning burningS;
 
 	private ModelAnimation modelAnim;
+	private Material[] RenderMat = null;
 
 	// Use this for initialization
 	void Start () {
@@ -74,6 +75,8 @@ public class HornetAI01 : MonoBehaviour {
 		if (AS != null) AS.pitch = (Random.value - 0.5f) - 0.5f;
 
 		modelAnim = this.transform.GetComponentInChildren<ModelAnimation>();
+
+		RenderMat = GetComponentInChildren<SkinnedMeshRenderer>().materials;
 	}
 	
 	// Update is called once per frame
@@ -138,6 +141,11 @@ public class HornetAI01 : MonoBehaviour {
 			//transform.GetChild(0).rigidbody.isKinematic = false;
 			//transform.GetChild(0).rigidbody.AddTorque(-0.1f,0.0f,0.0f,ForceMode.VelocityChange);
 			nowState = HornetAIState.Dead;
+			if (RenderMat != null) {
+				foreach (Material rm in RenderMat) {
+					rm.color = Color.black;
+				}
+			}
 			break;
 		case HornetAIState.Dead:
 			if (Time.time > IntervalTime) {
@@ -152,6 +160,15 @@ public class HornetAI01 : MonoBehaviour {
 					GetComponentsInChildren<SkinnedMeshRenderer>();
 				foreach (SkinnedMeshRenderer smr in SMR) {
 					smr.enabled = false;
+				}
+#endif
+			}
+			else {
+#if false
+				if (RenderMat != null) {
+					foreach (Material rm in RenderMat) {
+						rm.color = Color.black;
+					}
 				}
 #endif
 			}
